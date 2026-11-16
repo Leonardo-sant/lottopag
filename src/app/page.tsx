@@ -4,6 +4,7 @@ import { ArrowRight } from "lucide-react";
 import { ButtonLink } from "@/components/button-link";
 import { ClosingCta } from "@/components/closing-cta";
 import { FlowIllustration } from "@/components/flow-illustration";
+import { HeroNetwork } from "@/components/hero-network";
 import { ImplementationTimeline } from "@/components/implementation-timeline";
 import { PaymentLists } from "@/components/payment-lists";
 import { SectionHeader } from "@/components/section-header";
@@ -33,6 +34,7 @@ export default function HomePage() {
     <>
       {/* Hero */}
       <section aria-labelledby="hero-titulo" className="surface-dark hero-field relative overflow-hidden text-white">
+        <HeroNetwork />
         <div className="relative mx-auto grid max-w-[1200px] items-center gap-14 px-4 pt-14 pb-20 sm:px-6 md:pt-20 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] lg:gap-12 lg:px-8 lg:pt-24 lg:pb-28">
           <div>
             <h1

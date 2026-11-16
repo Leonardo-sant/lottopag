@@ -45,6 +45,13 @@ medida até ~65ch; numerais tabulares (`.tabular`) em valores e etapas.
 
 ## Movimento
 
+**Malha de rotas no hero** (`src/components/hero-network.tsx`): um canvas com nós assimétricos
+(abertos atrás do título, mais densos à direita e nas bordas) ligados aos vizinhos mais próximos.
+Deriva lenta; a cada poucos segundos um pulso amarelo percorre uma rota. Perto do cursor, nós e
+rotas passam a amarelo e surgem conexões latentes, com leve atração. Sem hover: só ambiente, menos
+nós e pulsos mais espaçados. Com movimento reduzido: quadro estático. Pausa fora da tela.
+
+
 Um momento autoral: o painel "Fluxo ilustrativo" avança estados das transações a cada 2,2 s e as rotas
 tracejadas correm entre estágios. Hover com deslocamento curto de setas (ease-out-expo). Tudo
 desligado com `prefers-reduced-motion`.
