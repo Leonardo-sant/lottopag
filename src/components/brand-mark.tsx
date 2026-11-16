@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { siteConfig } from "@/config/site";
+import { basePath, siteConfig } from "@/config/site";
 
 /**
  * Logotipo da Lottopag na versão adequada ao fundo.
@@ -18,7 +18,7 @@ export function BrandMark({
   const width = Math.round((height * logo.width) / logo.height);
   return (
     <Image
-      src={tone === "dark" ? logo.onDark : logo.onLight}
+      src={`${basePath}${tone === "dark" ? logo.onDark : logo.onLight}`}
       width={width}
       height={height}
       alt={name}

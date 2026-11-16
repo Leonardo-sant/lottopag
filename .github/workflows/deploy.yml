@@ -1,0 +1,49 @@
+name: Publicar no GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Build estático
+        run: npm run build
+        env:
+          # Sem domínio próprio o site fica em /<repositório>. Com a variável CUSTOM_DOMAIN definida, na raiz.
+          NEXT_PUBLIC_BASE_PATH: ${{ vars.CUSTOM_DOMAIN == '' && format('/{0}', github.event.repository.name) || '' }}
+          NEXT_PUBLIC_SITE_URL: ${{ vars.NEXT_PUBLIC_SITE_URL }}
+          NEXT_PUBLIC_CONTACT_ENDPOINT: ${{ vars.NEXT_PUBLIC_CONTACT_ENDPOINT }}
+          COMMERCIAL_EMAIL: ${{ vars.COMMERCIAL_EMAIL }}
+          COMMERCIAL_PHONE: ${{ vars.COMMERCIAL_PHONE }}
+      - run: touch out/.nojekyll
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: out
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

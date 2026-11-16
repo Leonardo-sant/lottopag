@@ -29,14 +29,17 @@ npm start           # serve o build
 | `/implantacao` | Quatro etapas e perguntas frequentes |
 | `/contato` | Formulário comercial |
 
-## Publicação (Netlify)
+## Publicação (GitHub Pages)
 
-O repositório já tem `netlify.toml`. Na Netlify: **Add new project → Import an existing project →
-GitHub → `lottopag`** e confirme o deploy. Cada push na `main` publica de novo.
+O site é exportado como HTML estático (`output: "export"` em `next.config.ts`) e publicado pelo
+workflow `.github/workflows/deploy.yml` a cada push na `main`. Em **Settings → Pages**, a fonte
+deve ser **GitHub Actions**.
 
-Variáveis de ambiente (Site configuration → Environment variables), quando estiverem definidas:
-`NEXT_PUBLIC_SITE_URL`, `CONTACT_WEBHOOK_URL`, `CONTACT_WEBHOOK_TOKEN`, `COMMERCIAL_EMAIL`,
-`COMMERCIAL_PHONE`. Depois de alterar uma variável, rode um novo deploy.
+As variáveis ficam em **Settings → Secrets and variables → Actions → Variables** (não são segredos;
+vão para o HTML): `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_CONTACT_ENDPOINT`, `COMMERCIAL_EMAIL`,
+`COMMERCIAL_PHONE`. Sem domínio próprio, o endereço é `https://leonardo-sant.github.io/lottopag/`.
+Ao ligar um domínio próprio em Settings → Pages, crie também a variável `CUSTOM_DOMAIN` (qualquer
+valor, ex. o próprio domínio) para o site passar a ser servido na raiz.
 
 ## Onde configurar
 
@@ -57,13 +60,12 @@ indexação (`robots.txt` e meta robots). Defina a variável quando o domínio d
 
 ### Formulário de contato
 
-O envio usa uma Server Action (`src/app/contato/actions.ts`) que faz `POST` JSON para
-`CONTACT_WEBHOOK_URL` (CRM, Zapier, Make, n8n ou API própria), com `CONTACT_WEBHOOK_TOKEN` opcional
-como Bearer.
+Como o site é estático, o envio sai do navegador (`src/lib/send-contact.ts`) com `POST` JSON para
+`NEXT_PUBLIC_CONTACT_ENDPOINT` (por exemplo, Formspree).
 
-- Sem webhook configurado: o visitante vê "O envio pelo formulário ainda não está ativo" e os dados continuam no formulário.
-- Webhook respondeu 2xx: confirmação de envio.
-- Webhook falhou ou não respondeu em 10 s: mensagem de erro, dados preservados.
+- Sem endpoint configurado: o visitante vê "O envio pelo formulário ainda não está ativo" e os dados continuam no formulário.
+- Serviço respondeu 2xx: confirmação de envio.
+- Serviço falhou ou não respondeu em 10 s: mensagem de erro, dados preservados.
 - Em ambos os casos de falha, `COMMERCIAL_EMAIL` e `COMMERCIAL_PHONE` (se definidos) aparecem como canal alternativo.
 
 Os CTAs do site pré-preenchem o assunto do formulário com `?assunto=` (`cash-in`, `cash-out`,

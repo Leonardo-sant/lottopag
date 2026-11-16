@@ -19,6 +19,9 @@ function normalizeUrl(value: string | null): URL | null {
 
 const configuredUrl = normalizeUrl(clean(process.env.NEXT_PUBLIC_SITE_URL));
 
+/** Subcaminho de publicação (ver next.config.ts). Necessário em <Image> e arquivos de /public. */
+export const basePath = clean(process.env.NEXT_PUBLIC_BASE_PATH)?.replace(/\/$/, "") ?? "";
+
 export const siteConfig = {
   name: "Lottopag",
   tagline: "Gateway de pagamentos, integração financeira e gestão de transações",

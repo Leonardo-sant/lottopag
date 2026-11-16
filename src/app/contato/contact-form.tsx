@@ -1,9 +1,9 @@
 "use client";
 
-import { useActionState, useEffect, useRef, useState, type ChangeEvent, type FormEvent, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ChangeEvent, type FormEvent, type ReactNode } from "react";
 import { useSearchParams } from "next/navigation";
 import { AlertTriangle, CheckCircle2, Loader2, Mail, Phone } from "lucide-react";
-import { submitContact } from "./actions";
+import { sendContact } from "@/lib/send-contact";
 import { contactSubjects, monthlyVolumeOptions, type ContactSubjectId } from "@/content/catalog";
 import { LIMITS, validate, type ContactFields, type ContactState, type FieldErrors } from "@/lib/contact";
 
@@ -60,7 +60,8 @@ function ContactFormInner({
   initial: Partial<ContactFields>;
   onReset: () => void;
 }) {
-  const [state, formAction, pending] = useActionState<ContactState, FormData>(submitContact, { status: "idle" });
+  const [state, setState] = useState<ContactState>({ status: "idle" });
+  const [pending, setPending] = useState(false);
   const [values, setValues] = useState<ContactFields>({ ...emptyFields, ...initial });
   const [clientErrors, setClientErrors] = useState<FieldErrors | null>(null);
   const formRef = useRef<HTMLFormElement>(null);
@@ -94,18 +95,33 @@ function ContactFormInner({
     }
   }
 
-  function onSubmit(event: FormEvent<HTMLFormElement>) {
+  async function onSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (pending) return;
     const trimmed = Object.fromEntries(
       Object.entries(values).map(([key, value]) => [key, value.trim()]),
     ) as ContactFields;
     const found = validate(trimmed);
     if (Object.keys(found).length > 0) {
-      event.preventDefault();
       setClientErrors(found);
       focusFirstError(found);
       return;
     }
     setClientErrors(null);
+
+    // Campo-armadilha para robôs: pessoas não o veem nem o preenchem.
+    const trap = formRef.current?.querySelector<HTMLInputElement>('[name="website"]')?.value;
+    if (trap) {
+      setState({ status: "success" });
+      return;
+    }
+
+    setPending(true);
+    try {
+      setState(await sendContact(trimmed));
+    } finally {
+      setPending(false);
+    }
   }
 
   if (state.status === "success") {
@@ -137,7 +153,6 @@ function ContactFormInner({
   return (
     <form
       ref={formRef}
-      action={formAction}
       onSubmit={onSubmit}
       noValidate
       aria-busy={pending}

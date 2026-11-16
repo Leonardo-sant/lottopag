@@ -1,3 +1,5 @@
+export const dynamic = "force-static";
+
 import { ImageResponse } from "next/og";
 import { siteConfig } from "@/config/site";
 
