@@ -29,6 +29,15 @@ npm start           # serve o build
 | `/implantacao` | Quatro etapas e perguntas frequentes |
 | `/contato` | Formulário comercial |
 
+## Publicação (Netlify)
+
+O repositório já tem `netlify.toml`. Na Netlify: **Add new project → Import an existing project →
+GitHub → `lottopag`** e confirme o deploy. Cada push na `main` publica de novo.
+
+Variáveis de ambiente (Site configuration → Environment variables), quando estiverem definidas:
+`NEXT_PUBLIC_SITE_URL`, `CONTACT_WEBHOOK_URL`, `CONTACT_WEBHOOK_TOKEN`, `COMMERCIAL_EMAIL`,
+`COMMERCIAL_PHONE`. Depois de alterar uma variável, rode um novo deploy.
+
 ## Onde configurar
 
 - **Marca, domínio, contatos, links legais:** `src/config/site.ts`

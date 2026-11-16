@@ -1,0 +1,7 @@
+# Publicação na Netlify. O adaptador de Next.js da Netlify é instalado automaticamente.
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "22"
