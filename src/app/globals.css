@@ -1,0 +1,157 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-instrument-sans), ui-sans-serif, system-ui, sans-serif;
+
+  /* Marca Lottopag — cores amostradas dos arquivos de logotipo */
+  --color-brand: #f2b70c;
+  --color-brand-soft: #f7c93f;
+  /* Dourado escurecido para ícones, foco e detalhes sobre fundo claro (contraste ≥ 3:1) */
+  --color-brand-ink: #8a6400;
+  --color-brand-ink-strong: #6e5000;
+
+  --color-coal-950: #050506;
+  --color-coal-900: #0e0e10;
+  --color-coal-800: #18181b;
+  --color-coal-700: #27272a;
+  --color-paper: #f7f7f5;
+  --color-paper-2: #efefeb;
+  --color-rule: #e0e0dc;
+  --color-rule-dark: #2c2c30;
+
+  --color-ink: #0e0e10;
+  --color-ink-muted: #4a4a50;
+  --color-mist: #a1a1aa;
+  --color-mist-strong: #d4d4d8;
+
+  /* Estados de transação: cinza → branco → amarelo da marca */
+  --color-state-pending: #8b8b93;
+  --color-state-processed: #e4e4e7;
+  --color-state-settled: #f2b70c;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+:root {
+  color-scheme: light;
+  --header-h: 72px;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--header-h) + 16px);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-feature-settings: "ss01", "tnum" 0;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--color-brand);
+  color: var(--color-coal-950);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-brand-ink);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.surface-dark :focus-visible {
+  outline-color: var(--color-brand);
+}
+
+.surface-brand :focus-visible {
+  outline-color: var(--color-ink);
+}
+
+/* Barra de rolagem discreta, na paleta */
+html {
+  scrollbar-color: #b4b4b0 var(--color-paper);
+}
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-paper);
+}
+::-webkit-scrollbar-thumb {
+  background: #b4b4b0;
+  border-radius: 999px;
+  border: 2px solid var(--color-paper);
+}
+
+input,
+select,
+textarea {
+  caret-color: var(--color-brand-ink);
+}
+
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Fundo do hero: carvão com um brilho discreto do amarelo da marca */
+.hero-field {
+  background-color: var(--color-coal-900);
+  background-image:
+    radial-gradient(ellipse 60% 70% at 85% 30%, rgba(242, 183, 12, 0.09), transparent 70%),
+    linear-gradient(180deg, var(--color-coal-900) 0%, var(--color-coal-950) 100%);
+}
+
+/* Animações — sempre a partir de um estado visível */
+@keyframes flow-dash {
+  to {
+    stroke-dashoffset: -24;
+  }
+}
+
+@keyframes chip-in {
+  from {
+    opacity: 0.35;
+    transform: translateY(2px);
+    filter: blur(2px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
+.flow-dash {
+  stroke-dasharray: 4 8;
+  animation: flow-dash 1.6s linear infinite;
+}
+
+.chip-enter {
+  animation: chip-in 520ms var(--ease-out-expo);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
