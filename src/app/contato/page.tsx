@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   title: "Falar com o comercial",
   description,
   openGraph: { title: `Falar com o comercial · ${siteConfig.name}`, description },
-  alternates: siteConfig.isDomainConfirmed ? { canonical: "/contato" } : undefined,
+  alternates: siteConfig.isDomainConfirmed ? { canonical: "/contato/" } : undefined,
 };
 
 const nextSteps = [

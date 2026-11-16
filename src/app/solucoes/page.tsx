@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   title: "Soluções",
   description,
   openGraph: { title: `Soluções · ${siteConfig.name}`, description },
-  alternates: siteConfig.isDomainConfirmed ? { canonical: "/solucoes" } : undefined,
+  alternates: siteConfig.isDomainConfirmed ? { canonical: "/solucoes/" } : undefined,
 };
 
 const integrationSteps = [

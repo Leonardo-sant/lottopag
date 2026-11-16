@@ -41,6 +41,19 @@ vão para o HTML): `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_CONTACT_ENDPOINT`, `COMM
 Ao ligar um domínio próprio em Settings → Pages, crie também a variável `CUSTOM_DOMAIN` (qualquer
 valor, ex. o próprio domínio) para o site passar a ser servido na raiz.
 
+## Publicação na HostGator (lottopag.com)
+
+O workflow `.github/workflows/deploy-hostgator.yml` gera o site para a raiz do domínio e envia a
+pasta `out/` por FTPS para `public_html/` a cada push na `main`, junto com o `.htaccess` de
+`deploy/htaccess-hostgator` (HTTPS obrigatório, `www` → domínio sem `www`, página 404 e cache).
+
+Configuração única no GitHub (Settings → Secrets and variables → Actions):
+
+- **Secrets:** `FTP_SERVER` (ex.: `ftp.lottopag.com` ou o servidor mostrado no cPanel), `FTP_USERNAME`, `FTP_PASSWORD`.
+- **Variables (opcionais):** `HOSTGATOR_SITE_URL` (padrão `https://lottopag.com`), `FTP_SERVER_DIR` (padrão `./public_html/`), `FTP_PROTOCOL` (padrão `ftps`; use `ftp` só se o FTPS falhar).
+
+Sem os segredos, o workflow termina sem publicar nada.
+
 ## Onde configurar
 
 - **Marca, domínio, contatos, links legais:** `src/config/site.ts`

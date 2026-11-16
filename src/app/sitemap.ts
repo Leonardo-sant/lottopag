@@ -3,7 +3,7 @@ export const dynamic = "force-static";
 import type { MetadataRoute } from "next";
 import { siteConfig } from "@/config/site";
 
-const routes = ["/", "/solucoes", "/implantacao", "/contato"];
+const routes = ["/", "/solucoes/", "/implantacao/", "/contato/"];
 
 export default function sitemap(): MetadataRoute.Sitemap {
   // O sitemap só lista URLs depois que o domínio de publicação for confirmado.

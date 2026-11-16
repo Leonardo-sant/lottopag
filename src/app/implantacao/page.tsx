@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   title: "Implantação",
   description,
   openGraph: { title: `Implantação · ${siteConfig.name}`, description },
-  alternates: siteConfig.isDomainConfirmed ? { canonical: "/implantacao" } : undefined,
+  alternates: siteConfig.isDomainConfirmed ? { canonical: "/implantacao/" } : undefined,
 };
 
 const faq: { question: string; answer: ReactNode }[] = [
